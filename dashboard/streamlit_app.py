@@ -12,8 +12,8 @@ st.set_page_config(page_title="BankTrust Customer Segmentation Dashboard", layou
 # --- Load Data ---
 @st.cache_data
 def load_data():
-    df = pd.read_csv('cleaned_data.csv')
-    rfm = pd.read_csv('segmented_data.csv')
+    df = pd.read_csv('dashboard/cleaned_data.csv')
+    rfm = pd.read_csv('dashboard/segmented_data.csv')
 
     # Merge on CustomerID if present
     if 'CustomerID' in df.columns:
