@@ -50,20 +50,30 @@ with st.sidebar:
     st.markdown("---")
     st.caption("Optimized for performance • Mobile-compatible")
 
-filtered_df = rfm[(rfm['Segments'].isin(segments)) & (rfm['Cluster'].isin(clusters))]
+if len(segments) == 0 or len(clusters) == 0:
+    st.warning("⚠️ Please select at least one segment and one cluster from the sidebar to display the customer overview/snapshot.")
+else:
+    # Filter data
+    filtered_df = rfm[(rfm['Segments'].isin(segments)) & (rfm['Cluster'].isin(clusters))]
 
-# --- Dashboard Title ---
-st.title("🏦 BankTrust Customer Segmentation Dashboard")
+    # --- Dashboard Title ---
+    st.title("🏦 BankTrust Customer Segmentation Dashboard")
 
-# --- KPIs ---
-st.markdown("### 📊 Key Metrics")
-col1, col2, col3, col4, col5 = st.columns(5)
-col1.metric("Number of Customers", len(filtered_df))
-col2.metric("Avg. Recency", f"{filtered_df['Recency'].mean():.1f} days")
-col3.metric("Avg. Frequency", f"{filtered_df['Frequency'].mean():.1f} txns")
-col4.metric("Avg. Monetary", f"₹{filtered_df['Monetary'].mean():,.0f}")
-largest_seg = filtered_df['Segments'].value_counts().idxmax()
-col5.metric("Top Segment", largest_seg)
+    # --- KPIs ---
+    st.markdown("### 📊 Key Metrics")
+    col1, col2, col3, col4, col5 = st.columns(5)
+    col1.metric("Number of Customers", len(filtered_df))
+    col2.metric("Avg. Recency", f"{filtered_df['Recency'].mean():.1f} days")
+    col3.metric("Avg. Frequency", f"{filtered_df['Frequency'].mean():.1f} txns")
+    col4.metric("Avg. Monetary", f"₹{filtered_df['Monetary'].mean():,.0f}")
+    segment_counts = filtered_df['Segments'].value_counts()
+
+    if not segment_counts.empty:
+        largest_seg = segment_counts.idxmax()
+        col5.metric("Top Segment", largest_seg)
+    else:
+        col5.metric("Top Segment", "Pick details to filter on dashboard")
+
 
 
 
