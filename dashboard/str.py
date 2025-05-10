@@ -51,16 +51,16 @@ with st.sidebar:
     st.caption("Optimized for performance • Mobile-compatible")
 
 if len(segments) == 0 or len(clusters) == 0:
-    st.warning("⚠️ Please select at least one segment and one cluster from the sidebar to display the customer overview/snapshot.")
+    st.warning("⚠️ Please select at least one segment and one cluster from the sidebar to display the key customer metrics/overview.")
 else:
     # Filter data
     filtered_df = rfm[(rfm['Segments'].isin(segments)) & (rfm['Cluster'].isin(clusters))]
 
     # --- Dashboard Title ---
-    st.title("🏦 BankTrust Customer Segmentation Dashboard")
+    st.title("💼 BankTrust Customer Segmentation Dashboard")
 
     # --- KPIs ---
-    st.markdown("### 📊 Key Metrics")
+    st.markdown("### 📊 Key Customer Metrics")
     col1, col2, col3, col4, col5 = st.columns(5)
     col1.metric("Number of Customers", len(filtered_df))
     col2.metric("Avg. Recency", f"{filtered_df['Recency'].mean():.1f} days")
@@ -72,7 +72,7 @@ else:
         largest_seg = segment_counts.idxmax()
         col5.metric("Top Segment", largest_seg)
     else:
-        col5.metric("Top Segment", "Pick details to filter on dashboard")
+        col5.metric("Top Segment", "Select filters")
 
 
 
@@ -148,7 +148,7 @@ if show_cluster_distribution:
 
 # --- Segment Funnel ---
 if show_segment_funnel:
-    st.markdown("### 🔄 Segment Value Funnel")
+    st.markdown("### 🔻 Segment Value Funnel")
     seg_mon = filtered_df.groupby('Segments')['Monetary'].mean().sort_values(ascending=False).reset_index()
     fig_funnel = px.funnel(
         seg_mon,
@@ -197,7 +197,7 @@ if show_segment_table:
 
 # --- Segment Lifecycle Pie ---
 if show_lifecycle_pie:
-    st.markdown("### 📊 Segment Lifecycle Distribution")
+    st.markdown("### 🥧 Segment Lifecycle Distribution")
     st.write("This chart shows the percentage of customers in each segment, reflecting the **customer count share**.")
 
     seg_dist = filtered_df['Segments'].value_counts().reset_index()
@@ -285,10 +285,10 @@ if show_segment_composition:
 
 # --- Cluster Profiles Section ---
 if show_cluster_profiles:
-    st.write("Cluster and Segment Cross-tab:")
-    st.write(pd.crosstab(filtered_df['Cluster'], filtered_df['Segments']))
-    
     st.markdown("### 🏆 Cluster Profiles")
+
+    st.markdown("##### Cluster and Segment Cross-tab:")
+    st.write(pd.crosstab(filtered_df['Cluster'], filtered_df['Segments']))
 
     for cluster_id in sorted(filtered_df['Cluster'].unique()):
         cluster_data = filtered_df[filtered_df['Cluster'] == cluster_id]
@@ -296,11 +296,11 @@ if show_cluster_profiles:
         with st.expander(f"Cluster {cluster_id}", expanded=False):
             # Corrected cluster descriptions
             if cluster_id == 2:
-                st.write("💎 High-value customers: frequent, high-spending, recent activity.")
+                st.write("💎 High-value customers: frequent, high monetary value, recent activity.")
             elif cluster_id == 0:
-                st.write("📦 Medium-value customers: moderate spending, moderate activity.")
+                st.write("🔶 Medium-value customers: moderate monetary value, moderate activity.")
             elif cluster_id == 1:
-                st.write("📉 Low-value customers: infrequent, low-spending, at risk or inactive.")
+                st.write("🪙 Low-value customers: infrequent, low monetary value, at risk or inactive.")
             else:
                 st.write("📦 Other customer group.")
 
@@ -309,7 +309,7 @@ if show_cluster_profiles:
             segment_summary = ", ".join([f"{seg}: {count}" for seg, count in segment_counts.items()])
             st.write(f"**Segment composition:** {segment_summary}")
 
-            # Select top 3 customers per segment (only from existing segments)
+            # Select top customers per segment (only from existing segments)
             top_customers_list = []
             for segment in segment_counts.index:
                 seg_data = cluster_data[cluster_data['Segments'] == segment]
@@ -360,8 +360,7 @@ if show_retention_strategies:
             "strategy": (
                 "**Boost engagement**:\n"
                 "- Send targeted promotions or seasonal offers.\n"
-                "- Provide incentives to increase frequency.\n"
-                "- Highlight upsell or cross-sell opportunities."
+                "- Provide incentives to increase frequency."
             )
         },
         "Low-Value Customers": {
@@ -369,7 +368,7 @@ if show_retention_strategies:
             "strategy": (
                 "**Re-engage or win back**:\n"
                 "- Use special discounts or win-back campaigns.\n"
-                "- Personalize outreach to understand drop-off reasons.\n"
+                "- Personalise outreach to understand drop-off reasons.\n"
                 "- Simplify reactivation steps and offer clear value."
             )
         }
