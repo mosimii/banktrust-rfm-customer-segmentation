@@ -57,7 +57,7 @@ else:
     filtered_df = rfm[(rfm['Segments'].isin(segments)) & (rfm['Cluster'].isin(clusters))]
 
     # --- Dashboard Title ---
-    st.title("💼 BankTrust Customer Segmentation Dashboard")
+    st.markdown("<h1 style='text-align: center;'>💼 BankTrust Customer Segmentation Dashboard</h1>", unsafe_allow_html=True)
 
     # --- KPIs ---
     st.markdown("### 📊 Key Customer Metrics")
