@@ -64,7 +64,7 @@ else:
     col1, col2, col3, col4, col5 = st.columns(5)
     col1.metric("Number of Customers", len(filtered_df))
     col2.metric("Avg. Recency", f"{filtered_df['Recency'].mean():.1f} days")
-    col3.metric("Avg. Frequency", f"{filtered_df['Frequency'].mean():.1f} transactions")
+    col3.metric("Avg. Frequency", f"{filtered_df['Frequency'].mean():.1f} txns")
     col4.metric("Avg. Monetary", f"₹{filtered_df['Monetary'].mean():,.0f}")
     segment_counts = filtered_df['Segments'].value_counts()
 
